@@ -1,11 +1,10 @@
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 public class Cell {
 	private Optional<Integer> value = Optional.empty();
-	private final Set<Integer> possibles = new HashSet<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9));
+	private final Set<Integer> possibles = new HashSet<Integer>(Game.ALL_NUMBERS);
 
 	public Optional<Integer> getValue() {
 		return value;

@@ -26,7 +26,7 @@ public class CellTest {
 		Cell cell = new Cell();
 
 		// then
-		assertThat(cell.getPossibles().toArray(), is(new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9}));
+		assertThat(cell.getPossibles().toArray(), is(Game.ALL_NUMBERS.toArray()));
 	}
 
 	@Test
@@ -39,7 +39,7 @@ public class CellTest {
 		cell.removePossible(numberToRemove);
 
 		// then
-		for (Integer number : new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9}) {
+		for (Integer number : Game.ALL_NUMBERS) {
 			assertThat(cell.isPossible(number), is(!number.equals(numberToRemove)));
 		}
 	}
