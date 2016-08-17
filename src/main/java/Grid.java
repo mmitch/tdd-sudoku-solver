@@ -27,7 +27,7 @@ public class Grid {
 	}
 
 	public List<Cell> getRow(int row) {
-		List<Cell> rowList = new ArrayList<Cell>();
+		List<Cell> rowList = new ArrayList<>();
 		for (int col = 0; col < Game.COLS; col++) {
 			rowList.add(getCell(col, row));
 		}
@@ -35,7 +35,7 @@ public class Grid {
 	}
 
 	public List<Cell> getColumn(int col) {
-		List<Cell> colList = new ArrayList<Cell>();
+		List<Cell> colList = new ArrayList<>();
 		for (int row = 0; row < Game.ROWS; row++) {
 			colList.add(getCell(col, row));
 		}
@@ -43,7 +43,7 @@ public class Grid {
 	}
 
 	public List<Cell> getBlock(int blockCol, int blockRow) {
-		List<Cell> colList = new ArrayList<Cell>();
+		List<Cell> colList = new ArrayList<>();
 		for (int row = blockRow * Game.BLOCK_ROWS; row < (blockRow + 1) * Game.BLOCK_ROWS; row++) {
 			for (int col = blockCol * Game.BLOCK_COLS; col < (blockCol + 1) * Game.BLOCK_COLS; col++) {
 				colList.add(getCell(col, row));
@@ -61,9 +61,7 @@ public class Grid {
 
 	public void setValue(int col, int row, Integer value) {
 		getCell(col, row).setValue(value);
-		for (Cell cell: getAllAffectedCells(col, row)) {
-			cell.removePossible(value);
-		}
+		getAllAffectedCells(col, row).forEach(c -> c.removePossible(value));
 	}
 
 }
