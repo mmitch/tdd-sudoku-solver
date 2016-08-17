@@ -3,6 +3,7 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.junit.Test;
 
@@ -87,7 +88,7 @@ public class GridTest {
 		// then
 		assertThat(grid.getCell(colNum, rowNum).getValue().get(), is(value));
 		for (int col = 0; col < Game.COLS; col++) {
-			assertThat(String.format("cell(%d,%d)", col, rowNum), grid.getCell(col, rowNum).isPossible(value), is(false));
+			assertThatCell(col, rowNum, c -> c.isPossible(value), false);
 		}
 	}
 
@@ -104,7 +105,7 @@ public class GridTest {
 		// then
 		assertThat(grid.getCell(colNum, rowNum).getValue().get(), is(value));
 		for (int row = 0; row < Game.ROWS; row++) {
-			assertThat(String.format("cell(%d,%d)", colNum, row), grid.getCell(colNum, row).isPossible(value), is(false));
+			assertThatCell(colNum, row, c -> c.isPossible(value), false);
 		}
 	}
 
@@ -124,7 +125,7 @@ public class GridTest {
 		assertThat(grid.getCell(colNum, rowNum).getValue().get(), is(value));
 		for (int row = blockRow * Game.BLOCK_ROWS; row < (blockRow + 1) * Game.BLOCK_ROWS; row++) {
 			for (int col = blockCol * Game.BLOCK_COLS; col < (blockCol + 1) * Game.BLOCK_COLS; col++) {
-				assertThat(String.format("cell(%d,%d)", col, row), grid.getCell(col, row).isPossible(value), is(false));
+				assertThatCell(col, row, c -> c.isPossible(value), false);
 			}
 		}
 	}
@@ -140,6 +141,14 @@ public class GridTest {
 	{
 		Grid grid = new Grid();
 		assertThat(grid.getBlockRow(3), is(1));
+	}
+
+	private void assertThatCell(int col, int row, Predicate<Cell> actualFunc, boolean expected) {
+		assertThat(
+				String.format("cell(%d,%d)", col, row),
+				actualFunc.test(grid.getCell(col, row)),
+				is(expected)
+				);
 	}
 
 }
