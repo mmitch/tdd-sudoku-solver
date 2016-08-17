@@ -55,8 +55,16 @@ public class Grid {
 	private Set<Cell> getAllAffectedCells(int col, int row) {
 		Set<Cell> cells = new HashSet<>(getRow(row));
 		cells.addAll(getColumn(col));
-		cells.addAll(getBlock(col/Game.BLOCK_COLS, row/Game.BLOCK_ROWS));
+		cells.addAll(getBlock(getBlockColumn(col), getBlockRow(row)));
 		return cells;
+	}
+
+	int getBlockRow(int row) {
+		return row/Game.BLOCK_ROWS;
+	}
+
+	int getBlockColumn(int col) {
+		return col/Game.BLOCK_COLS;
 	}
 
 	public void setValue(int col, int row, Integer value) {
