@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Grid {
 	private List<Cell> cells = new ArrayList<Cell>();
@@ -50,15 +52,16 @@ public class Grid {
 		return colList;
 	}
 
-	public void setValue(int colNum, int rowNum, Integer value) {
-		getCell(colNum, rowNum).setValue(value);
-		for (Cell cell: getRow(rowNum)) {
-			cell.removePossible(value);
-		}
-		for (Cell cell: getColumn(rowNum)) {
-			cell.removePossible(value);
-		}
-		for (Cell cell: getBlock(colNum/Game.BLOCK_COLS, rowNum/Game.BLOCK_ROWS)) {
+	private Set<Cell> getAllAffectedCells(int col, int row) {
+		Set<Cell> cells = new HashSet<>(getRow(row));
+		cells.addAll(getColumn(col));
+		cells.addAll(getBlock(col/Game.BLOCK_COLS, row/Game.BLOCK_ROWS));
+		return cells;
+	}
+
+	public void setValue(int col, int row, Integer value) {
+		getCell(col, row).setValue(value);
+		for (Cell cell: getAllAffectedCells(col, row)) {
 			cell.removePossible(value);
 		}
 	}
