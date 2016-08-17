@@ -8,12 +8,13 @@ import org.junit.Test;
 
 public class GridTest {
 
+	private Grid grid = new Grid();
+
 	@Test
 	public void neuesGridHatNurLeereZellen() {
 		// given
 
 		// when
-		Grid grid = new Grid();
 
 		// then
 		for (int row = 0; row < Game.ROWS; row++) {
@@ -26,7 +27,6 @@ public class GridTest {
 	@Test
 	public void reiheLesenLiefertDieKorrektenZellen() {
 		// given
-		Grid grid = new Grid();
 		int rowNum = 2;
 
 		// when
@@ -42,7 +42,6 @@ public class GridTest {
 	@Test
 	public void spalteLesenLiefertDieKorrektenZellen() {
 		// given
-		Grid grid = new Grid();
 		int colNum = 1;
 
 		// when
@@ -58,7 +57,6 @@ public class GridTest {
 	@Test
 	public void blockLesenLiefertDieKorrektenZellen() {
 		// given
-		Grid grid = new Grid();
 		int blockCol = 1;
 		int blockRow = 2;
 
@@ -79,7 +77,6 @@ public class GridTest {
 	@Test
 	public void wertSetzenEntferntMoeglichkeitAusReihe() {
 		// given
-		Grid grid = new Grid();
 		int rowNum = 2;
 		int colNum = 4;
 		int value = 9;
@@ -97,7 +94,6 @@ public class GridTest {
 	@Test
 	public void wertSetzenEntferntMoeglichkeitAusSpalte() {
 		// given
-		Grid grid = new Grid();
 		int rowNum = 2;
 		int colNum = 4;
 		int value = 9;
@@ -115,7 +111,6 @@ public class GridTest {
 	@Test
 	public void wertSetzenEntferntMoeglichkeitAusBlock() {
 		// given
-		Grid grid = new Grid();
 		int rowNum = 2;
 		int colNum = 4;
 		int value = 9;
@@ -137,7 +132,6 @@ public class GridTest {
 	@Test
 	public void blockColumnFuerSpalte6Ist2()
 	{
-		Grid grid = new Grid();
 		assertThat(grid.getBlockColumn(6), is(2));
 	}
 
