@@ -133,14 +133,13 @@ public class GridTest {
 	@Test
 	public void blockColumnFuerSpalte6Ist2()
 	{
-		assertThat(grid.getBlockColumn(6), is(2));
+		assertThat(Grid.getBlockColumn(6), is(2));
 	}
 
 	@Test
 	public void blockRowFuerZeile3Ist1()
 	{
-		Grid grid = new Grid();
-		assertThat(grid.getBlockRow(3), is(1));
+		assertThat(Grid.getBlockRow(3), is(1));
 	}
 
 	private void assertThatCell(int col, int row, Predicate<Cell> actualFunc, boolean expected) {
