@@ -1,8 +1,8 @@
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Predicate;
 
 import org.junit.Test;
@@ -31,13 +31,15 @@ public class GridTest {
 		int rowNum = 2;
 
 		// when
-		List<Cell> row = grid.getRow(rowNum);
+		Collection<Cell> row = grid.getRow(rowNum);
 
 		// then
 		assertThat(row.size(), is(Game.COLS));
+		Cell[] expectedRow = new Cell[Game.COLS];
 		for (int col = 0; col < Game.COLS; col++) {
-			assertThat(row.get(col), sameInstance(grid.getCell(col, rowNum)));
+			expectedRow[col] = grid.getCell(col, rowNum);
 		}
+		assertThat(row, containsInAnyOrder(expectedRow));
 	}
 
 	@Test
@@ -46,13 +48,15 @@ public class GridTest {
 		int colNum = 1;
 
 		// when
-		List<Cell> col = grid.getColumn(colNum);
+		Collection<Cell> col = grid.getColumn(colNum);
 
 		// then
 		assertThat(col.size(), is(Game.ROWS));
+		Cell[] expectedCol = new Cell[Game.ROWS];
 		for (int row = 0; row < Game.ROWS; row++) {
-			assertThat(col.get(row), sameInstance(grid.getCell(colNum, row)));
+			expectedCol[row] = grid.getCell(colNum, row);
 		}
+		assertThat(col, containsInAnyOrder(expectedCol));
 	}
 
 	@Test
@@ -62,17 +66,19 @@ public class GridTest {
 		int blockRow = 2;
 
 		// when
-		List<Cell> block = grid.getBlock(blockCol, blockRow);
+		Collection<Cell> block = grid.getBlock(blockCol, blockRow);
 
 		// then
 		assertThat(block.size(), is(Game.ALL_NUMBERS.size()));
-		int i = 0;
+		Cell[] expectedBlock = new Cell[Game.ALL_NUMBERS.size()];
+		int i=0;
 		for (int row = blockRow * Game.BLOCK_ROWS; row < (blockRow + 1) * Game.BLOCK_ROWS; row++) {
 			for (int col = blockCol * Game.BLOCK_COLS; col < (blockCol + 1) * Game.BLOCK_COLS; col++) {
-				assertThat(block.get(i), sameInstance(grid.getCell(col, row)));
+				expectedBlock[i] = grid.getCell(col, row);
 				i++;
 			}
 		}
+		assertThat(block, containsInAnyOrder(expectedBlock));
 	}
 
 	@Test
@@ -140,6 +146,36 @@ public class GridTest {
 	public void blockRowFuerZeile3Ist1()
 	{
 		assertThat(Grid.getBlockRow(3), is(1));
+	}
+
+	@Test
+	public void alleZellenInZeile6KennenIhreNachbarn()
+	{
+		Collection<Cell> row = grid.getRow(6);
+
+		for (Cell c: row) {
+			assertThat(c.getRow(), containsInAnyOrder(row.toArray()));
+		}
+	}
+
+	@Test
+	public void alleZellenInSpalte3KennenIhreNachbarn()
+	{
+		Collection<Cell> column = grid.getColumn(3);
+
+		for (Cell c: column) {
+			assertThat(c.getColumn(), containsInAnyOrder(column.toArray()));
+		}
+	}
+
+	@Test
+	public void alleZellenInBlock0_1kennenIhreNachbarn()
+	{
+		Collection<Cell> block = grid.getBlock(0, 1);
+
+		for (Cell c: block) {
+			assertThat(c.getBlock(), containsInAnyOrder(block.toArray()));
+		}
 	}
 
 	private void assertThatCell(int col, int row, Predicate<Cell> actualFunc, boolean expected) {
