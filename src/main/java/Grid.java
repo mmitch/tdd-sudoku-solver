@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Grid {
@@ -93,11 +92,6 @@ public class Grid {
 		return blocks.get(getBlockIndex(blockCol, blockRow));
 	}
 
-	public void setValue(int col, int row, Integer value) {
-		getCell(col, row).setValue(value);
-		getAllAffectedCells(col, row).forEach(c -> c.removePossible(value));
-	}
-
 	public Stream<Cell> cells() {
 		return cells.stream();
 	}
@@ -110,18 +104,16 @@ public class Grid {
 		return col/Game.BLOCK_COLS;
 	}
 
-	private Set<Cell> getAllAffectedCells(int col, int row) {
-		return Stream.concat( //
-								getRow(row).stream(), //
-								Stream.concat( //
-										getColumn(col).stream(), //
-										getBlockForCellAt(col, row).stream()) //
-								) //
-						.collect(Collectors.toCollection(HashSet::new)); // HashSet deduplicates automatically
+	public List<Set<Cell>> getRows() {
+		return rows;
 	}
 
-	private Set<Cell> getBlockForCellAt(int col, int row) {
-		return getBlock(getBlockColumn(col), getBlockRow(row));
+	public List<Set<Cell>> getColumns() {
+		return columns;
+	}
+
+	public List<Set<Cell>> getBlocks() {
+		return blocks;
 	}
 
 }

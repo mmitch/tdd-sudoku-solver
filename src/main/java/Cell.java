@@ -1,13 +1,16 @@
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class Cell {
 	private Optional<Integer> value = Optional.empty();
 	private final Set<Integer> possibles = new HashSet<Integer>(Game.ALL_NUMBERS);
-	private Set<Cell> row;
-	private Set<Cell> column;
-	private Set<Cell> block;
+
+	// initialization only to keep getAllNeighbours() happy when testing Cells outside of a Grid
+	private Set<Cell> row = new HashSet<>();
+	private Set<Cell> column = new HashSet<>();
+	private Set<Cell> block = new HashSet<>();
 
 	public Optional<Integer> getValue() {
 		return value;
@@ -28,6 +31,7 @@ public class Cell {
 	public void setValue(Integer value) {
 		this.value = Optional.of(value);
 		possibles.clear();
+		getAllNeighbours().forEach(neighbour -> neighbour.removePossible(value));
 	}
 
 	public Set<Cell> getRow() {
@@ -52,5 +56,10 @@ public class Cell {
 
 	public void setBlock(Set<Cell> block) {
 		this.block = block;
+	}
+
+	private Stream<Cell> getAllNeighbours() {
+		return Stream.concat(row.stream(), Stream.concat(column.stream(), block.stream())) //
+				.filter(cell -> cell != this);
 	}
 }

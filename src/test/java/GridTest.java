@@ -89,7 +89,7 @@ public class GridTest {
 		int value = 9;
 
 		// when
-		grid.setValue(colNum, rowNum, value);
+		grid.getCell(colNum, rowNum).setValue(value);
 
 		// then
 		assertThat(grid.getCell(colNum, rowNum).getValue().get(), is(value));
@@ -106,7 +106,7 @@ public class GridTest {
 		int value = 9;
 
 		// when
-		grid.setValue(colNum, rowNum, value);
+		grid.getCell(colNum, rowNum).setValue(value);
 
 		// then
 		assertThat(grid.getCell(colNum, rowNum).getValue().get(), is(value));
@@ -125,7 +125,7 @@ public class GridTest {
 		int blockCol = 1; // TODO calculate this
 
 		// when
-		grid.setValue(colNum, rowNum, value);
+		grid.getCell(colNum, rowNum).setValue(value);
 
 		// then
 		assertThat(grid.getCell(colNum, rowNum).getValue().get(), is(value));
