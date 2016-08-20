@@ -17,6 +17,51 @@ public class Grid {
 		linkBlocks();
 	}
 
+	public Stream<Cell> cells() {
+		return cells.stream();
+	}
+
+	public List<Set<Cell>> getRows() {
+		return rows;
+	}
+
+	public List<Set<Cell>> getColumns() {
+		return columns;
+	}
+
+	public List<Set<Cell>> getBlocks() {
+		return blocks;
+	}
+
+	Cell getCell(int col, int row) {
+		return cells.get(getIndex(col, row));
+	}
+
+	Set<Cell> getRow(int row) {
+
+		return rows.get(row);
+	}
+
+	Set<Cell> getColumn(int col) {
+		return columns.get(col);
+	}
+
+	Set<Cell> getBlock(int blockCol, int blockRow) {
+		return blocks.get(getBlockIndex(blockCol, blockRow));
+	}
+
+	private void setCell(int col, int row, Cell cell) {
+		cells.add(getIndex(col, row), cell);
+	}
+
+	private int getIndex(int col, int row) {
+		return row * Game.COLS + col;
+	}
+
+	private int getBlockIndex(int blockCol, int blockRow) {
+		return blockRow * Game.ROWS / Game.BLOCK_ROWS + blockCol;
+	}
+
 	private void linkBlocks() {
 		int blockCount = getBlockIndex(getBlockColumn(Game.COLS-1), getBlockRow(Game.ROWS-1)) + 1;
 		for (int block = 0; block < blockCount; block++) {
@@ -63,57 +108,12 @@ public class Grid {
 		}
 	}
 
-	Cell getCell(int col, int row) {
-		return cells.get(getIndex(col, row));
-	}
-
-	private void setCell(int col, int row, Cell cell) {
-		cells.add(getIndex(col, row), cell);
-	}
-
-	private int getIndex(int col, int row) {
-		return row * Game.COLS + col;
-	}
-
-	private int getBlockIndex(int blockCol, int blockRow) {
-		return blockRow * Game.ROWS / Game.BLOCK_ROWS + blockCol;
-	}
-
-	Set<Cell> getRow(int row) {
-
-		return rows.get(row);
-	}
-
-	Set<Cell> getColumn(int col) {
-		return columns.get(col);
-	}
-
-	Set<Cell> getBlock(int blockCol, int blockRow) {
-		return blocks.get(getBlockIndex(blockCol, blockRow));
-	}
-
-	public Stream<Cell> cells() {
-		return cells.stream();
-	}
-
 	static int getBlockRow(int row) {
 		return row/Game.BLOCK_ROWS;
 	}
 
 	static int getBlockColumn(int col) {
 		return col/Game.BLOCK_COLS;
-	}
-
-	public List<Set<Cell>> getRows() {
-		return rows;
-	}
-
-	public List<Set<Cell>> getColumns() {
-		return columns;
-	}
-
-	public List<Set<Cell>> getBlocks() {
-		return blocks;
 	}
 
 }
