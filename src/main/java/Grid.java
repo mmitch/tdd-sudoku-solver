@@ -63,7 +63,7 @@ public class Grid {
 		}
 	}
 
-	public Cell getCell(int col, int row) {
+	Cell getCell(int col, int row) {
 		return cells.get(getIndex(col, row));
 	}
 
@@ -79,16 +79,16 @@ public class Grid {
 		return blockRow * Game.ROWS / Game.BLOCK_ROWS + blockCol;
 	}
 
-	public Set<Cell> getRow(int row) {
+	Set<Cell> getRow(int row) {
 
 		return rows.get(row);
 	}
 
-	public Set<Cell> getColumn(int col) {
+	Set<Cell> getColumn(int col) {
 		return columns.get(col);
 	}
 
-	public Set<Cell> getBlock(int blockCol, int blockRow) {
+	Set<Cell> getBlock(int blockCol, int blockRow) {
 		return blocks.get(getBlockIndex(blockCol, blockRow));
 	}
 
@@ -96,11 +96,11 @@ public class Grid {
 		return cells.stream();
 	}
 
-	public static int getBlockRow(int row) {
+	static int getBlockRow(int row) {
 		return row/Game.BLOCK_ROWS;
 	}
 
-	public static int getBlockColumn(int col) {
+	static int getBlockColumn(int col) {
 		return col/Game.BLOCK_COLS;
 	}
 
