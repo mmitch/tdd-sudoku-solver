@@ -29,6 +29,17 @@ public class Solver {
 	}
 	
 	private void checkCellSet(Set<Cell> cells) {
+		checkCellSetForDeterminedValues(cells);
+		checkCellSetForUniquePossibilities(cells);
+	}
+
+	private void checkCellSetForDeterminedValues(Set<Cell> cells) {
+		cells.stream() //
+			.filter(cell -> cell.getPossibles().size() == 1) //
+			.forEach(cell -> setValueAndCheckRecursively(cell, cell.getPossibles().iterator().next()));
+	}
+
+	private void checkCellSetForUniquePossibilities(Set<Cell> cells) {
 		Stream<Integer> uniquePossibilities = cells.stream() //
 			.map(Cell::getPossibles) //
 			.flatMap(Set::stream) //
@@ -41,11 +52,11 @@ public class Solver {
 		uniquePossibilities //
 			.forEach(value -> cells.stream() //
 					.filter(cell -> cell.isPossible(value))
-					.forEach(cell -> enterValue(cell, value)) //
+					.forEach(cell -> setValueAndCheckRecursively(cell, value)) //
 					);
 	}
 
-	private void enterValue(Cell cell, Integer value) {
+	private void setValueAndCheckRecursively(Cell cell, Integer value) {
 		cell.setValue(value);
 		checkCellSet(cell.getRow());
 		checkCellSet(cell.getColumn());

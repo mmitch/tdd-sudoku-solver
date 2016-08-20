@@ -13,6 +13,21 @@ public class SolverTest {
 	Solver solver = new Solver(grid);
 	
 	@Test
+	public void ergaenzeZahlWennNurEineMoeglichkeitBleibt() {
+		// given
+		Cell cell = grid.getCell(0, 0);
+		cell.getPossibles().clear();
+		cell.getPossibles().add(3);
+
+		// when
+		solver.solve();
+
+		// then
+		assertThat(cell.getValue(), isPresent());
+		assertThat(cell.getValue().get(), is(3));
+	}
+
+	@Test
 	public void ergaenzeFehlende4InZeile3() {
 		// given
 		setStartPostitionInGrid( //
@@ -25,10 +40,10 @@ public class SolverTest {
 				"...   ..." +
 				"...   ..." +
 				"...   ...");
-		
+
 		// when
 		solver.solve();
-		
+
 		// then
 		Optional<Integer> cellValue = grid.getCell(3, 3).getValue();
 		assertThat(cellValue, isPresent());
@@ -48,10 +63,10 @@ public class SolverTest {
 				"...   ..." +
 				"...   .8." +
 				"...   .9.");
-		
+
 		// when
 		solver.solve();
-		
+
 		// then
 		Optional<Integer> cellValue = grid.getCell(7, 6).getValue();
 		assertThat(cellValue, isPresent());
@@ -71,10 +86,10 @@ public class SolverTest {
 				"...   ..." +
 				"...   ..." +
 				"...   ...");
-		
+
 		// when
 		solver.solve();
-		
+
 		// then
 		Optional<Integer> cellValue = grid.getCell(1, 3).getValue();
 		assertThat(cellValue, isPresent());
@@ -85,21 +100,40 @@ public class SolverTest {
 	public void loeseEinfachesSudoku() {
 		// given
 		setStartPostitionInGrid( //
-				"49   36  " +
-				"  71   54" +
-				"  15 67  " +
-				"    628  " +
-				"6 2    39" +
-				" 8 7 1 2 " +
-				"35    47 " +
-				"  631    " +
-				"1  8 7  3");
-		
+				"49.  36.." +
+				"..71  .54" +
+				"..15 67.." +
+				"   .628  " +
+				"6 2... 39" +
+				" 8 7.1 2 " +
+				"35.   47." +
+				"..631 ..." +
+				"1..8 7..3");
+
 		// when
-		Dumper.dump(grid);
 		solver.solve();
-		Dumper.dump(grid);
-		
+
+		// then
+		assertThatGridIsSolved();
+	}
+
+	@Test
+	public void loeseSchwierigesSudoku() {
+		// given
+		setStartPostitionInGrid( //
+				".849  .3." +
+				"5..  4..9" +
+				"... 3 ..6" +
+				"84 .1.  7" +
+				" 1 ... 2 " +
+				"6  .7. 84" +
+				"3.. 5 ..." +
+				"7..3    5" +
+				".5.  739.");
+
+		// when
+		solver.solve();
+
 		// then
 		assertThatGridIsSolved();
 	}
