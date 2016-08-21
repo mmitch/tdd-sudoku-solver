@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Grid {
@@ -48,10 +49,6 @@ public class Grid {
 
 	Set<Cell> getBlock(int blockCol, int blockRow) {
 		return blocks.get(getBlockIndex(blockCol, blockRow));
-	}
-
-	private void setCell(int col, int row, Cell cell) {
-		cells.add(getIndex(col, row), cell);
 	}
 
 	private int getIndex(int col, int row) {
@@ -101,11 +98,8 @@ public class Grid {
 	}
 
 	private void createCells() {
-		for (int row = 0; row < Game.ROWS; row++) {
-			for (int col = 0; col < Game.COLS; col++) {
-				setCell(col, row, new Cell());
-			}
-		}
+		IntStream.range(0, Game.COLS*Game.ROWS) //
+			.forEach(i -> cells.add(new Cell()));
 	}
 
 	static int getBlockRow(int row) {
