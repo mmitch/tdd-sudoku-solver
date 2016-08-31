@@ -1,8 +1,12 @@
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import org.junit.Test;
@@ -175,6 +179,39 @@ public class GridTest {
 
 		for (Cell c: block) {
 			assertThat(c.getBlock(), containsInAnyOrder(block.toArray()));
+		}
+	}
+
+	@Test
+	public void geklontesGridHatGleichenInhaltAberNeueInstanz() throws Exception
+	{
+		// given
+		Cell cell = grid.getCell(3, 2);
+		cell.setValue(1);
+
+		// when
+		Grid cloneGrid = grid.clone();
+
+		// then
+		Cell cloneCell = cloneGrid.getCell(3, 2);
+		assertThat(cloneCell, not(sameInstance(cell)));
+		assertThat(cloneCell.getValue(), is(cell.getValue()));
+	}
+
+	@Test
+	public void gekolontesGridHatNeueInstanzFuerSpalten() throws Exception {
+		// given
+		Set<Cell> column = grid.getColumn(5);
+		column.iterator().next().setValue(8);
+
+		// when
+		Grid cloneGrid = grid.clone();
+
+		// then
+		Set<Cell> cloneColumn = cloneGrid.getColumn(5);
+		assertThat(cloneColumn, not(sameInstance(column)));
+		for (Cell cloneCell: cloneColumn) {
+			assertThat(cloneCell.getPossibles(), not(hasItem(8)));
 		}
 	}
 

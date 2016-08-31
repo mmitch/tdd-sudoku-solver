@@ -5,17 +5,15 @@ import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Grid {
-	private final List<Cell> cells = new ArrayList<>();
-	private final List<Set<Cell>> rows = new ArrayList<>();
-	private final List<Set<Cell>> columns = new ArrayList<>();
-	private final List<Set<Cell>> blocks = new ArrayList<>();
+public class Grid implements Cloneable {
+	private List<Cell> cells = new ArrayList<>();
+	private List<Set<Cell>> rows;
+	private List<Set<Cell>> columns;
+	private List<Set<Cell>> blocks;
 
 	public Grid() {
 		createCells();
-		linkColumns();
-		linkRows();
-		linkBlocks();
+		createLinks();
 	}
 
 	public Stream<Cell> cells() {
@@ -32,6 +30,16 @@ public class Grid {
 
 	public List<Set<Cell>> getBlocks() {
 		return blocks;
+	}
+
+	public Grid clone() throws CloneNotSupportedException {
+		Grid clone = (Grid) super.clone();
+		clone.cells = new ArrayList<Cell>();
+		for (Cell cell: cells) { // no stream because of CloneNotSupportedException :-(
+			clone.cells.add(cell.clone());
+		}
+		clone.createLinks();
+		return clone;
 	}
 
 	Cell getCell(int col, int row) {
@@ -59,7 +67,14 @@ public class Grid {
 		return blockRow * Game.ROWS / Game.BLOCK_ROWS + blockCol;
 	}
 
+	private void createLinks() {
+		linkColumns();
+		linkRows();
+		linkBlocks();
+	}
+
 	private void linkBlocks() {
+		blocks = new ArrayList<>();
 		int blockCount = getBlockIndex(getBlockColumn(Game.COLS-1), getBlockRow(Game.ROWS-1)) + 1;
 		for (int block = 0; block < blockCount; block++) {
 			blocks.add(new HashSet<>());
@@ -76,6 +91,7 @@ public class Grid {
 	}
 
 	private void linkRows() {
+		rows = new ArrayList<>();
 		for (int row = 0; row < Game.ROWS; row++) {
 			Set<Cell> rowset = new HashSet<>();
 			for (int col = 0; col < Game.COLS; col++) {
@@ -87,6 +103,7 @@ public class Grid {
 	}
 
 	private void linkColumns() {
+		columns = new ArrayList<>();
 		for (int col = 0; col < Game.COLS; col++) {
 			Set<Cell> columnset = new HashSet<>();
 			for (int row = 0; row < Game.ROWS; row++) {
@@ -101,6 +118,7 @@ public class Grid {
 		IntStream.range(0, Game.COLS*Game.ROWS) //
 			.forEach(i -> cells.add(new Cell()));
 	}
+
 
 	static int getBlockRow(int row) {
 		return row/Game.BLOCK_ROWS;
