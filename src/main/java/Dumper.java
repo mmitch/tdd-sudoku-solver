@@ -2,7 +2,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class Dumper {
 
@@ -70,12 +69,7 @@ public class Dumper {
 	}
 
 	private static String cellValueToString(Cell cell) {
-		Optional<Integer> value = cell.getValue();
-		if (value.isPresent()) {
-			return String.format("%01d", value.get());
-		} else {
-			return ".";
-		}
+		return cell.getValue().map(value -> String.format("%01d", value)).orElse(".");
 	}
 
 }
