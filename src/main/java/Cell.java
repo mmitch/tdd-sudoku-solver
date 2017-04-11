@@ -37,7 +37,7 @@ public class Cell implements Cloneable {
 	public Cell clone() throws CloneNotSupportedException {
 		Cell clone = (Cell) super.clone();
 		clone.possibles = new HashSet<>(getPossibles());
-		clone.value = Optional.ofNullable(getValue().orElse(null));
+		clone.value = cloneOptional(getValue());
 		return clone;
 	}
 
@@ -69,4 +69,9 @@ public class Cell implements Cloneable {
 		return Stream.concat(row.stream(), Stream.concat(column.stream(), block.stream())) //
 				.filter(cell -> cell != this);
 	}
+
+	private <T> Optional<T> cloneOptional(Optional<T> original) {
+		return Optional.ofNullable(original.orElse(null));
+	}
+
 }
